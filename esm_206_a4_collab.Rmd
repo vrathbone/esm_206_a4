@@ -70,8 +70,10 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 
 ggplot(data = lobster_ysite_a, aes(x = year,
                                    y = n)) +
-  geom_line(aes(color = site)) +
-  scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
+  geom_line(aes(color = site))
+            
+            
+# scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
 
 
 ```
