@@ -41,7 +41,7 @@ lobster_ysite_a <- lobster_tidy %>%
 # Results B: Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018
 
 lobster_size_site_b <- lobster_tidy %>%
-  filter(year == 2012, 2018)
+  filter(year %in% c(2012, 2018))
   
 # need to find standard diviation of lobster size distribution 
 # because it's a distribution plot we may want to consider a density or histogram plot
@@ -70,7 +70,8 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 
 ggplot(data = lobster_ysite_a, aes(x = year,
                                    y = n)) +
-  geom_line(aes(color = site))
+  geom_line(aes(color = site)) +
+  
             
             
 # scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
