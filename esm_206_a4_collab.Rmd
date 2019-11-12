@@ -1,6 +1,6 @@
 ---
-title: "Untitled"
-author: "Vanessa Rathbone"
+title: "Assignment 4 - Spiny Lobsters"
+author: "Vanessa Rathbone and Nicole Schmidt"
 date: "11/12/2019"
 output: html_document
 ---
@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ```{r}
-
 # Attach library packages
 # Read in data and tidy it
 
@@ -22,7 +21,7 @@ library(janitor)
 
 # Read in data with clean_names()
 
-lobster_tidy <- readr::read_csv("lobster_abundance_sbc_lter (1).csv",
+lobster_tidy <- readr::read_csv("lobster_abundance_sbc_lter.csv",
 na = "-99999") %>% 
   clean_names()
 
@@ -34,7 +33,7 @@ lobster_ysite_a <- lobster_tidy %>%
 # Results B: Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018
 
 lobster_size_site_b <- lobster_tidy %>%
-  filter(year == 2012, 2018) %>% 
+  filter(year == 2012, 2018)
   
 # need to find standard diviation of lobster size distribution 
 # because it's a distribution plot we may want to consider a density or histogram plot
@@ -78,10 +77,6 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 ```
 
 ##### REFERENCES
-```{r}
 
 Reed D. 2019. SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012. Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Dataset accessed 10/30/2019.
-
-```
-
 
