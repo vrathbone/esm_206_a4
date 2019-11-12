@@ -71,7 +71,6 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 ggplot(data = lobster_ysite_a, aes(x = year,
                                    y = n)) +
   geom_line(aes(color = site)) +
-  scale 
   scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
 
 
@@ -80,7 +79,17 @@ ggplot(data = lobster_ysite_a, aes(x = year,
 ###### RESULTS B size dif per site
 ```{r}
 
+lobster_size_2012 <- lobster_tidy %>%
+  filter(year == 2012) %>% 
+  group_by(site) %>%
+  summarize(total = mean(size_mm, na.rm = TRUE)) %>% 
+  mutate(year = 2012)
 
+lobster_size_2018<- lobster_tidy %>% 
+  filter(year == 2018) %>% 
+  group_by(site) %>%
+  summarise(size_avg = mean(size_mm, na.rm = TRUE)) %>%
+  mutate(year = 2018)
 
 ```
 
