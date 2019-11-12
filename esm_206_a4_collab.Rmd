@@ -28,7 +28,15 @@ na = "-99999") %>%
 # Results A: Visually explore changes in annual lobster abundance (counts) by site.
 
 lobster_ysite_a <- lobster_tidy %>% 
-  count(year, site)
+  count(year, site) %>% 
+  mutate("MPA" = ifelse(site == "IVEE", "MPA",
+                        ifelse(site == "NAPL", "MPA",
+                               "non-MPA"))) %>% 
+  mutate("site_name" = ifelse(site == "IVEE", "Isla Vista",
+                              ifelse(site == "NAPL", "Naples",
+                                     ifelse(site == "AQUE", "Arroyo Quemado",
+                                            ifelse(site == "CARP", "Carpenteria",
+                                            "Mohawk")))))
 
 # Results B: Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018
 
@@ -58,11 +66,21 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 ###### RESULTS A Abundance of lobsters per site
 ```{r}
 
+# Exlore data viz for lobster count per site per year
+
+ggplot(data = lobster_ysite_a, aes(x = year,
+                                   y = n)) +
+  geom_line(aes(color = site)) +
+  scale 
+  scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
+
 
 ```
 
-###### RESULTS B size per site
+###### RESULTS B size dif per site
 ```{r}
+
+
 
 ```
 
