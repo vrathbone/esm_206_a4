@@ -99,8 +99,8 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
                                             "Mohawk")))))
 
 # Create a box plot
-ggplot(data = lobster_size_b, aes(x = site, y = size_mm))+
-  geom_jitter(aes(color = site),
+ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
+  geom_jitter(aes(color = site_name),
               show.legend = FALSE)+
   scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue"))+
   geom_boxplot(aes(fill = year), alpha = 0.5, outlier.color = NA, fill = "light blue")+
