@@ -131,12 +131,55 @@ lobster_means <- lobster_size_b %>%
 lobster_2012_mean <- lobster_size_b %>% 
   filter(year == 2012) %>% 
   group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE),
+            sd_size = sd(size_mm, na.rm = TRUE),
+            sample_n = n())
   
 lobster_2018_mean <- lobster_size_b %>% 
    filter(year == 2018) %>% 
   group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE), 
+            sd_size = sd(size_mm, na.rm = TRUE),
+            sample_n = n())
+
+# Use a t-test to find confidence intervals between MPA and non-MPA
+
+t_test_MPA <- lobster_size_b %>% 
+  filter(MPA == "MPA") %>% 
+  pull(size_mm)
+
+t.test(t_test_MPA)
+
+t_test_non_MPA <- lobster_size_b %>% 
+  filter(MPA == "non-MPA") %>% 
+  pull(size_mm)
+
+t.test(t_test_non_MPA)
+
+# Use a t-test to find confidence intervals between MPA and nonMPA in 2012
+
+#Create New data frame for MPA only data, and data only from 2012 and 2018
+
+MPA_12_18 <- lobster_tidy %>% 
+  filter(year == "2012" | year == "2018") %>% 
+  mutate(protected = case_when(
+    site == "IVEE" ~ "MPA",
+    site == "NAPL" ~ "MPA",
+    site == "AQUE" ~ "Non-MPA",
+    site == "CARP" ~ "Non-MPA",
+    site == "MOHK" ~ "Non-MPA"))
+
+MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
+  geom_boxplot(aes(fill = protected)) +
+  facet_wrap(~ year) +
+  theme_classic() +
+  scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
+  labs(x = "Site",
+       y = "Carapace Length (mm)",
+       title = "Size Distribution of Lobsters at Santa Barbara Channel LTER Sites (2012 + 2018") +
+  scale_fill_discrete(name = "Protected Status")
+
+MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 
 #Levene's test for variance, 
 
