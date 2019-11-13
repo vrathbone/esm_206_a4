@@ -19,6 +19,8 @@ library(tidyverse)
 library(purrr)
 library(ggplot2)
 library(janitor)
+library(kableExtra)
+library(plotly)
 
 # Read in data with clean_names()
 
@@ -120,10 +122,23 @@ ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
 
 ###### RESULTS C means per MPAs
 ```{r}
-
+# Create new data set for lobster size means for MPA vs non-MPA 2012 and 2018
 lobster_means <- lobster_size_b %>% 
   group_by(MPA) %>% 
   summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+
+# Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites
+lobster_2012_mean <- lobster_size_b %>% 
+  filter(year == 2012) %>% 
+  group_by(MPA) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+  
+lobster_2018_mean <- lobster_size_b %>% 
+   filter(year == 2018) %>% 
+  group_by(MPA) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+
+#Levene's test for variance, 
 
 ```
 
