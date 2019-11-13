@@ -121,6 +121,10 @@ ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
 ###### RESULTS C means per MPAs
 ```{r}
 
+lobster_means <- lobster_size_b %>% 
+  group_by(MPA) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+
 ```
 
 ##### SUMMARY 
