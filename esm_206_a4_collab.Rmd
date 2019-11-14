@@ -5,8 +5,8 @@ date: "11/12/2019"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 ```
 
 ### TEST TEXT ADD
@@ -44,7 +44,12 @@ Data on abundance, size and fishing pressure of California spiny lobster (Panuli
 
 This dataset contains two tables. 1) Abundance and size data collected annually by divers in late summer before the start of the fishing season at five SBC LTER long term kelp forest study sites: two within MPAs (Naples and Isla Vista) and three outside (Arroyo Quemado, Mohawk and Carpinteria). 2) Fishing pressure, as determined by counting the number of commercial trap floats. Data are collected every two to four weeks during the lobster fishing season (October to March) at nine sites along the mainland, eight of which are also SBC LTER long-term kelp forest study reefs.
 
+![](lob_pic.jpg)
+**Figure 1.** *California spiny lobster (Panulirus interruptus). Credit: [Golden State Images](http://www.goldenstateimages.com/GSI_big.php?img=LOB-005).*
 
+![](lob_sites.png)
+
+**Figure 2.** *Spacial Coverage of the five data sites. Credit:  [Santa Barbara Coastal LTER, Danial C. Reed](https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=77&revision=newest)*
 
 ##### DATA AND METHODS (both)
 ```{r}
