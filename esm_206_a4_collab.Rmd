@@ -19,6 +19,7 @@ library(ggplot2)
 library(janitor)
 library(kableExtra)
 library(plotly)
+library(effsize)
 
 # Read in data and tidy it using clean_names() and uncount()
 
@@ -165,11 +166,19 @@ ggplot(lobster_18, aes(sample = size_mm)) +
 ```{r}
 
 # RESULTS B
+# Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018.
 
-ggplot(data = lobster_tidy, aes(x = site_name,
-                                y = num_au())+
-          geom_jitter(aes(color = site_name),
-              show.legend = FALSE)
+ggplot(data = lobster_size_b, aes(x = site,
+                                y = size_mm)) +
+          geom_jitter(aes(color = site),
+                      alpha = 0.75,
+              show.legend = FALSE) +
+  labs(x = "Year",
+      y = "Carapace Size (mm)",
+      title = "Lobster size distribution shifts in Santa Barbara") +
+  theme_classic() +
+    facet_wrap(~year)
+
 
 
 ```
@@ -182,10 +191,13 @@ ggplot(data = lobster_tidy, aes(x = site_name,
 # Create new data set for lobster size means for MPA vs non-MPA 2012 and 2018
 
 lobster_means <- lobster_size_b %>% 
-  group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+  select(year, size_mm, site, MPA, site_name, protected) %>% 
+  group_by(year, protected) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE),
+            sd_size = sd(size_mm, na.rm = TRUE),
+            sample_n = n())
 
-# Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites
+# Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites for stats exploration 
 
 lobster_2012_mean <- lobster_size_b %>% 
   filter(year == 2012) %>% 
@@ -202,6 +214,14 @@ lobster_2018_mean <- lobster_size_b %>%
             sample_n = n())
 
 ```
+
+```{r}
+
+
+
+```
+
+
 
 ```{r, include = FALSE}
 
@@ -300,6 +320,24 @@ t_test_non_MPA <- lobster_size_b %>%
 t.test(t_test_non_MPA)
 
 # Use a t-test to find confidence intervals between MPA and nonMPA in 2012
+
+```
+
+```{r}
+
+# RESULTS C
+# Create table(s) using kableExtra
+
+# Create data set to combine lobster means per MPA/non-MPA sites for 2012 and 2018
+
+lobster_table <- lobster_means %>%
+ kable(col.names = c("year",
+                     "protected",
+                     "mean_mm")) %>%
+ kable_styling(bootstrap_options = "striped",
+               full_width = F,
+               position = "left") %>%
+ add_header_above(c("Lobster Mean Size at MPA and Non-MPA sites (2012 + 2018)" = 3))
 
 ```
 
