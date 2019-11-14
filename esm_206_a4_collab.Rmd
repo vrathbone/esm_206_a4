@@ -85,7 +85,7 @@ ggplot(data = lobster_ysite_a, aes(x = year,
 
 ```
 
-###### RESULTS B size dif per site
+###### Mean Lobster size distribution shifts 2012 & 2018
 ```{r}
 #Wrangling data to create a data frame that that keeps size measurements from the year 2013 and 2018. 
 
@@ -101,21 +101,32 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
                               ifelse(site == "NAPL", "Naples",
                                      ifelse(site == "AQUE", "Arroyo Quemado",
                                             ifelse(site == "CARP", "Carpenteria",
-                                            "Mohawk")))))
+                                            "Mohawk"))))) %>% 
+   mutate(protected = case_when(
+    site == "IVEE" ~ "MPA",
+    site == "NAPL" ~ "MPA",
+    site == "AQUE" ~ "Non-MPA",
+    site == "CARP" ~ "Non-MPA",
+    site == "MOHK" ~ "Non-MPA"))
 
 # Create a box plot
 ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
   geom_jitter(aes(color = site_name),
               show.legend = FALSE)+
-  scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue"))+
+  #scale_x_discrete(limits = "AQUE", "CARP","MOHK","IVEE", "NAPL")+
+  #scale_fill_discrete(name = "Protected Status")
   geom_boxplot(aes(fill = year), alpha = 0.5, outlier.color = NA, fill = "light blue")+
   labs(x = "Year",
       y = "Size (mm)",
       title = "Lobster size distribution shifts in Santa Barbara LTER")+
-  xlab("year")+
-  ylab("size_avg")+
-  facet_wrap(~ year)+
-  theme_classic()
+  labs(x = "Year", y = "Lobster Size (mm)")+
+  scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue")) +
+  theme_classic()+
+    scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue"))+
+    facet_wrap(~ year)
+
+# need to fix graph so that the colors correspond with MPA and non-MPA. Also need to fix 
+
 
 
 ```
@@ -179,7 +190,7 @@ MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
        title = "Size Distribution of Lobsters at Santa Barbara Channel LTER Sites (2012 + 2018") +
   scale_fill_discrete(name = "Protected Status")
 
-MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
+MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) # This is our graph for part B?
 
 #Levene's test for variance, 
 
