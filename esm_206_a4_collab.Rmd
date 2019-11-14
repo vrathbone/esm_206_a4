@@ -9,9 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
 ```
 
-### TEST TEXT ADD
-
-```{r}
+```{r, include = FALSE}
 # Attach library packages
 # Read in data and tidy it
 
@@ -35,9 +33,7 @@ na = "-99999") %>%
 
 ```
 
-##### INTRO (both)
-# need to rewrite
-# add image of a spiny lobster and the map of the locations? if so, add references to bottom
+##### INTRO
 
 Abstract:	
 Data on abundance, size and fishing pressure of California spiny lobster (Panulirus interruptus) are collected along the mainland coast of the Santa Barbara Channel. Spiny lobsters are an important predator in giant kelp forests off southern California. Two SBC LTER study reefs are located in or near the California Fish and Game Network of Marine Protected Areas (MPA), Naples and Isla Vista, both established as MPAs on 2012-01-01. MPAs provide a unique opportunity to investigate the effects of fishing on kelp forest community dynamics. Sampling began in 2012 and is ongoing.
@@ -57,7 +53,7 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 ```
 
 ###### RESULTS A: Abundance of lobsters per site
-```{r}
+```{r, include = FALSE}
 
 # RESULTS A
 # Create data frame for results A
@@ -73,9 +69,6 @@ lobster_ysite_a <- lobster_tidy %>%
                                             ifelse(site == "CARP", "Carpenteria",
                                             "Mohawk")))))
 
-
-```
-```{r}
 
 # RESULTS A: 
 # Visually explore the data, explore by site
@@ -118,11 +111,12 @@ ggplot(data = lobster_ysite_a, aes(x = year,
 
 ```
 
-
+**Figure 3.** *Abundance of spiny lobsters per site*
+NEEDS DESCRIPTION 
 
 ###### RESULTS B: Lobster size distribution shifts in 2012 & 2018
 
-```{r}
+```{r, include = FALSE}
 
 # RESULTS B
 # Q: Is there a significance difference in lobster size distribution shifts in 2012 and 2018.
@@ -159,10 +153,55 @@ ggplot(lobster_18, aes(sample = size_mm)) +
 
 ```
 
-```{r}
+```{r, include = FALSE}
 
 # RESULTS B
 # Wrangling data to create a data frame that keeps size measurements from the year 2012 and 2018. 
+
+
+
+```
+
+```{r}
+
+# RESULTS B
+
+
+```
+
+###### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
+```{r, include = FALSE}
+
+# RESULTS C
+# Wrangle data for means 
+# Create new data set for lobster size means for MPA vs non-MPA 2012 and 2018
+
+lobster_means <- lobster_size_b %>% 
+  group_by(MPA) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
+
+# Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites
+
+lobster_2012_mean <- lobster_size_b %>% 
+  filter(year == 2012) %>% 
+  group_by(MPA) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE),
+            sd_size = sd(size_mm, na.rm = TRUE),
+            sample_n = n())
+  
+lobster_2018_mean <- lobster_size_b %>% 
+   filter(year == 2018) %>% 
+  group_by(MPA) %>% 
+  summarise(mean_mm = mean(size_mm, na.rm = TRUE), 
+            sd_size = sd(size_mm, na.rm = TRUE),
+            sample_n = n())
+
+```
+
+```{r, include = FALSE}
+
+# RESULTS C 
+# Wrangle data to show mean size of lobsters for MPA and non-MPA sites
 
 lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
   clean_names() %>% 
@@ -188,7 +227,7 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 
 ```{r}
 
-# RESULTS B
+# RESULTS C
 # Graph exploration 
 # Create a box plot option 1
 
@@ -237,36 +276,8 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 
 ```
 
-###### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
-```{r}
 
-# RESULTS C
-# Wrangle data for means 
-# Create new data set for lobster size means for MPA vs non-MPA 2012 and 2018
-
-lobster_means <- lobster_size_b %>% 
-  group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE))
-
-# Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites
-
-lobster_2012_mean <- lobster_size_b %>% 
-  filter(year == 2012) %>% 
-  group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE),
-            sd_size = sd(size_mm, na.rm = TRUE),
-            sample_n = n())
-  
-lobster_2018_mean <- lobster_size_b %>% 
-   filter(year == 2018) %>% 
-  group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE), 
-            sd_size = sd(size_mm, na.rm = TRUE),
-            sample_n = n())
-
-```
-
-```{r}
+```{r, include = FALSE}
 
 # RESULTS C
 # Use a t-test to find confidence intervals between MPA and non-MPA
@@ -289,9 +300,8 @@ t.test(t_test_non_MPA)
 
 
 ##### SUMMARY 
-```{r}
+NEED TO WRITE
 
-```
 
 ##### REFERENCES
 
