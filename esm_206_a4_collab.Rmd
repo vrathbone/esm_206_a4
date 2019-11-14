@@ -22,24 +22,12 @@ library(janitor)
 library(kableExtra)
 library(plotly)
 
-# Read in data with clean_names()
+# Read in data and tidy it using clean_names() and uncount()
 
 lobster_tidy <- readr::read_csv("lobster_abundance_sbc_lter.csv",
 na = "-99999") %>% 
   clean_names() %>% 
   tidyr::uncount(count)
-
-
-# Data sets for lobster size distribution shifts in 2012 and 2018, together and separately
-
-lobster_12_18 <- lobster_tidy %>%
-  filter(year %in% c(2012, 2018)) #2036 observations 
-
-lobster_12 <- lobster_tidy %>% #231 observations 
-  filter(year == "2012")
-
-lobster_18 <- lobster_tidy %>% #1805 observations 
-  filter(year == "2018")
 
 # need to find standard diviation of lobster size distribution 
 # because it's a distribution plot we may want to consider a density or histogram plot
@@ -56,6 +44,8 @@ Data on abundance, size and fishing pressure of California spiny lobster (Panuli
 
 This dataset contains two tables. 1) Abundance and size data collected annually by divers in late summer before the start of the fishing season at five SBC LTER long term kelp forest study sites: two within MPAs (Naples and Isla Vista) and three outside (Arroyo Quemado, Mohawk and Carpinteria). 2) Fishing pressure, as determined by counting the number of commercial trap floats. Data are collected every two to four weeks during the lobster fishing season (October to March) at nine sites along the mainland, eight of which are also SBC LTER long-term kelp forest study reefs.
 
+
+
 ##### DATA AND METHODS (both)
 ```{r}
 
@@ -64,8 +54,8 @@ This dataset contains two tables. 1) Abundance and size data collected annually 
 ###### RESULTS A: Abundance of lobsters per site
 ```{r}
 
-# Results A: Visually explore changes in annual lobster abundance (counts) by site.
-# create data frame for results A
+# RESULTS A
+# Create data frame for results A
 
 lobster_ysite_a <- lobster_tidy %>% 
   count(year, site) %>% 
@@ -78,7 +68,37 @@ lobster_ysite_a <- lobster_tidy %>%
                                             ifelse(site == "CARP", "Carpenteria",
                                             "Mohawk")))))
 
-# Exlore data viz for lobster count per site per year
+
+```
+```{r}
+
+# RESULTS A: 
+# Visually explore the data, explore by site
+
+# Jitterplot 
+ggplot(lobster_tidy, aes(x = site, y = size_mm)) +
+  geom_jitter()
+
+# Violin plot: 
+ggplot(lobster_tidy, aes(x = site, y = size_mm)) +
+  geom_violin()
+
+# Histogram: 
+ggplot(lobster_tidy, aes(x = size_mm)) +
+  geom_histogram() +
+  facet_wrap(~site)
+
+# QQ plot: 
+ggplot(lobster_tidy, aes(sample = size_mm)) +
+  geom_qq() +
+  facet_wrap(~site)
+
+```
+
+```{r}
+
+# RESULTS A: 
+# Create graph for lobster count per site per year
 
 ggplot(data = lobster_ysite_a, aes(x = year,
                                    y = n)) +
@@ -91,13 +111,15 @@ ggplot(data = lobster_ysite_a, aes(x = year,
             
 # scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
 
-
 ```
 
-###### RESULTS B: Mean Lobster size distribution shifts 2012 & 2018
+
+
+###### RESULTS B: Lobster size distribution shifts in 2012 & 2018
 
 ```{r}
 
+# RESULTS B
 # Q: Is there a significance difference in lobster size distribution shifts in 2012 and 2018.
 # Data sets for lobster size distribution shifts in 2012 and 2018, together and separately
 
@@ -110,7 +132,7 @@ lobster_12 <- lobster_tidy %>% # 231 observations
 lobster_18 <- lobster_tidy %>% # 1805 observations 
   filter(year == "2018")
 
-# Based on Central Limit Theorem, the sampling distribution of means in 2018 will be normally distributed because there are 1805 observations. There are 231 observations in the 2012 data, and because of the Central Limit Theorem, we can also assume normally distributed means, regardless of underlying population. Therefore, comparing means using a t-test is OK and we believe the means are a useful metric of comparison.
+# Based on Central Limit Theorem, the sampling distribution of means in 2018 will be normally distributed because there are 1805 observations. There are 231 observations in the 2012 data, and because of the Central Limit Theorem, we can also assume normally distributed means, regardless of underlying population. Therefore, comparing means using a t-test is OK and we believe the means are a useful metric of comparison. CLT = sampling distribution of the means will be normal.
 
 # Visually explore the data: 
 
@@ -133,7 +155,9 @@ ggplot(lobster_18, aes(sample = size_mm)) +
 ```
 
 ```{r}
-#Wrangling data to create a data frame that that keeps size measurements from the year 2013 and 2018. 
+
+# RESULTS B
+# Wrangling data to create a data frame that keeps size measurements from the year 2012 and 2018. 
 
 lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
   clean_names() %>% 
@@ -159,6 +183,7 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 
 ```{r}
 
+# RESULTS B
 # Graph exploration 
 # Create a box plot option 1
 
@@ -180,7 +205,6 @@ ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
 # need to fix graph so that the colors correspond with MPA and non-MPA. Also need to fix site names to be vertical
 
 # OPTION 2: 
-
 #Create New data frame for MPA only data, and data only from 2012 and 2018
 
 MPA_12_18 <- lobster_tidy %>% 
@@ -202,28 +226,25 @@ MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
        title = "Size Distribution of Lobsters at Santa Barbara Channel LTER Sites (2012 + 2018") +
   scale_fill_discrete(name = "Protected Status")
 
-MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) # This is our graph for part B?
+MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) 
+
+# Need to decide which one we think does a better job at responsibly and clearly describing the data
 
 ```
 
+###### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
 ```{r}
 
-
-
-
-
-
-```
-
-
-###### RESULTS C means per MPAs
-```{r}
+# RESULTS C
+# Wrangle data for means 
 # Create new data set for lobster size means for MPA vs non-MPA 2012 and 2018
+
 lobster_means <- lobster_size_b %>% 
   group_by(MPA) %>% 
   summarise(mean_mm = mean(size_mm, na.rm = TRUE))
 
 # Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites
+
 lobster_2012_mean <- lobster_size_b %>% 
   filter(year == 2012) %>% 
   group_by(MPA) %>% 
@@ -238,6 +259,11 @@ lobster_2018_mean <- lobster_size_b %>%
             sd_size = sd(size_mm, na.rm = TRUE),
             sample_n = n())
 
+```
+
+```{r}
+
+# RESULTS C
 # Use a t-test to find confidence intervals between MPA and non-MPA
 
 t_test_MPA <- lobster_size_b %>% 
@@ -254,11 +280,8 @@ t.test(t_test_non_MPA)
 
 # Use a t-test to find confidence intervals between MPA and nonMPA in 2012
 
-
-
-#Levene's test for variance, 
-
 ```
+
 
 ##### SUMMARY 
 ```{r}
