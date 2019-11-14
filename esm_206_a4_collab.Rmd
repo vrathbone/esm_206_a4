@@ -166,6 +166,11 @@ ggplot(lobster_18, aes(sample = size_mm)) +
 
 # RESULTS B
 
+ggplot(data = lobster_tidy, aes(x = site_name,
+                                y = num_au())+
+          geom_jitter(aes(color = site_name),
+              show.legend = FALSE)
+
 
 ```
 
