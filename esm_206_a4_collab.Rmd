@@ -403,6 +403,10 @@ lobster_table <- lobster_means %>%
 
 
 ##### SUMMARY 
+- mpa versus non-MPA
+- different sample sizes (n) making a difference in analysis?
+-
+
 NEED TO WRITE
 
 
