@@ -41,7 +41,7 @@ Spiney Lobster (Panulirus interruptus) are a species of special interest in Cali
 
 ##### DATA AND METHODS (VANESSA)
 
-The dataset includes abundance (count) and carapace size (mm) data of spiney lobstar in 5 designated sites: 2 MPAs (Naples and Isla Vista) and 3 non-MPAs (Arroyo Quemado, Mohawk and Carpinteria) from 2012 through 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data included visually explorations and the following statistical test: two-sided T-tests, mean, SD, sample size, p-value, confidence intervals, QQ plot. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. 
+The dataset includes abundance (count) and carapace size (mm) data of spiney lobstar in 5 designated sites: 2 MPAs (Naples and Isla Vista) and 3 non-MPAs (Arroyo Quemado, Mohawk and Carpinteria) from 2012 through 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data included visualually explorating the data and the following statistical tests: two-sided T-tests, mean, SD, sample size, p-value, confidence intervals, QQ plot. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. 
 
 
 ###### RESULTS A: Abundance of lobsters per site
