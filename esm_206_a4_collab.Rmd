@@ -54,16 +54,14 @@ The dataset includes abundance (count) and carapace size (mm) data of spiney lob
 # Create data frame for results A
 
 lobster_ysite_a <- lobster_tidy %>% 
-  count(year, site) %>% 
-  mutate("MPA" = ifelse(site == "IVEE", "MPA",
-                        ifelse(site == "NAPL", "MPA",
-                               "non-MPA"))) %>% 
+  count(year, site) %>%
   mutate("site_name" = ifelse(site == "IVEE", "Isla Vista",
                               ifelse(site == "NAPL", "Naples",
                                      ifelse(site == "AQUE", "Arroyo Quemado",
                                             ifelse(site == "CARP", "Carpenteria",
                                             "Mohawk"))))) %>% 
   rename("total_count" = "n")
+
 
 # Visually explore the data, explore by site
 
@@ -151,8 +149,28 @@ ggplot(lobster_18, aes(sample = size_mm)) +
 ```{r, include = FALSE}
 
 # RESULTS B
-# Wrangling data to create a data frame that keeps size measurements from the year 2012 and 2018. 
+# Wrangling data to create a data frame that keeps size measurements from 2012 and 2018, also for MPA vs. non-MPA
 
+lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
+  clean_names() %>% 
+  tidyr::uncount(count) %>% 
+  filter(year %in% c(2012, 2018)) %>% 
+  group_by(site, year) %>% 
+  select(year, size_mm, site) %>% 
+  mutate("MPA" = ifelse(site == "IVEE", "MPA",
+                        ifelse(site == "NAPL", "MPA",
+                               "non-MPA"))) %>%
+  mutate("site_name" = ifelse(site == "IVEE", "Isla Vista",
+                              ifelse(site == "NAPL", "Naples",
+                                     ifelse(site == "AQUE", "Arroyo Quemado",
+                                            ifelse(site == "CARP", "Carpenteria",
+                                            "Mohawk"))))) %>% 
+   mutate(protected = case_when(
+    site == "IVEE" ~ "MPA",
+    site == "NAPL" ~ "MPA",
+    site == "AQUE" ~ "Non-MPA",
+    site == "CARP" ~ "Non-MPA",
+    site == "MOHK" ~ "Non-MPA"))
 
 
 ```
@@ -208,7 +226,7 @@ lobster_2012_mean <- lobster_size_b %>%
             sample_n = n())
   
 lobster_2018_mean <- lobster_size_b %>% 
-   filter(year == 2018) %>% 
+  filter(year == 2018) %>% 
   group_by(MPA) %>% 
   summarise(mean_mm = mean(size_mm, na.rm = TRUE), 
             sd_size = sd(size_mm, na.rm = TRUE),
@@ -229,8 +247,7 @@ lobster_2018_mean <- lobster_size_b %>%
 # RESULTS C 
 # Wrangle data to show mean size of lobsters for MPA and non-MPA sites
 
-lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>% 
-  clean_names() %>% 
+lobster_size_b <- lobster_tidy
   filter(year %in% c(2012, 2018)) %>% 
   group_by(site, year) %>% 
   select(year, size_mm, site) %>% 
@@ -305,20 +322,43 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 
 ```{r, include = FALSE}
 
+#VANESSA TO FIX FRIDAY...too late to be CODINGGGG
 # RESULTS C
 # Use a two-sided t-test (because data is unpaired) to look at any differences in mean lobster sizes between MPA and non-MPA, and in 2012 and 2018
 
-t_test_MPA <- lobster_size_b %>% 
-  filter(MPA == "MPA") %>% 
-  pull(size_mm)
+MPA_2012 <- lobster_size_b %>% 
+  filter(protected == "MPA" | year == "2012")
 
-t.test(t_test_MPA)
+nonMPA_2012 <- lobster_size_b %>% 
+  filter(protected == "Non-MPA" | year == "2012")
+
+t.test(t_test_MPA$size_mm)
 
 t_test_non_MPA <- lobster_size_b %>% 
   filter(MPA == "non-MPA") %>% 
   pull(size_mm)
 
 t.test(t_test_non_MPA)
+
+## Testing differences in means between carapace length in protected and non-protected sites
+ 
+##H0: There is no difference in carapace lengths between protected and non-protected sites
+##HA: There is a difference in carapace lenths between protected and nonprotected sites
+
+##2012
+
+mpa12_protected <- MPA12 %>%
+  filter(PROTECTED == "MPA") %>%
+  filter(YEAR == "2012")
+      
+mpa12_unprotected <- MPA12 %>%
+  filter(PROTECTED == "Non-MPA") %>%
+  filter(YEAR == "2012")
+
+mpa12_t <- t.test(mpa12_protected$SIZE, mpa12_unprotected$SIZE, var.equal = TRUE)
+
+mpa12_t
+
 
 # **Example statement of test outcome:** # change *p* in comment so it's reproduceable 
 # This will be in the Rmd file, NOT in a code chunk, but should still run
