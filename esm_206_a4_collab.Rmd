@@ -60,6 +60,7 @@ lobster_ysite_a <- lobster_tidy %>%
   rename("total_count" = "n")
 
 
+
 # Visually explore the data, explore by site
 
 # Jitterplot 
@@ -89,20 +90,22 @@ ggplot(lobster_tidy, aes(sample = size_mm)) +
 
 ggplot(data = lobster_ysite_a, aes(x = year,
                                    y = total_count)) +
-  geom_line(aes(color = site)) +
+  geom_line(aes(color = site_name)) +
   labs(x = "Year",
        y = "Lobster Count",
        title = "Lobster Count in Santa Barbara LTER") +
-    theme_minimal()
+    theme_minimal()+
+    scale_x_continuous(expand = c(0,0), 
+                     limits = c(2012,2018),
+                     breaks = seq(2012, 2018, by = 1)) +
+  scale_y_continuous(expand = c(0,0))
   
-            
-            
 # scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
 
 ```
 
-**Figure 3.** *Abundance of spiny lobsters per site*
-NEEDS DESCRIPTION 
+**Figure 3.** *Abundance of spiny lobsters at 5 different SBC LTER sites between the years 2012 and 2018. Growth rates for lobster abundance increased significantly for Isla Vista, while Arroyo Quemado remained stagnat. Data: Reed D. 2019.*
+#need to remame site_name 
 
 ###### RESULTS B: Lobster size distribution shifts in 2012 & 2018
 
