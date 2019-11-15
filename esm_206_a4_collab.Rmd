@@ -201,7 +201,7 @@ ggplot(data = lobster_size_b, aes(x = site,
 
 
 ```
-**Figure 4.** *Lobster carapace size distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are more sample sizes for 2018 in all 5 sites than in 2012.*
+**Figure 4.** *Lobster carapace size distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more sample sizes colelcted for each site in 2018 than in 2012.*
 NEEDS DESCRIPTION 
 
 
@@ -319,7 +319,8 @@ MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
 MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) 
 
 # Need to decide which one we think does a better job at responsibly and clearly describing the data
-#Nicole thinks MPA Graph 12_18 is better.
+#Nicole thinks MPA Graph 12_18 is better. We might want to write the entire name out for each site?
+# Summary of graph: 
 
 
 ```
