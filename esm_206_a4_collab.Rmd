@@ -309,7 +309,7 @@ MPA_12_18 <- lobster_tidy %>%
 MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
   geom_boxplot(aes(fill = protected)) +
   facet_wrap(~ year) +
-  theme_classic() +
+  theme_minimal() +
   scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
   labs(x = "Site",
        y = "Carapace Length (mm)",
@@ -320,11 +320,11 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 
 # Need to decide which one we think does a better job at responsibly and clearly describing the data
 #Nicole thinks MPA Graph 12_18 is better. We might want to write the entire name out for each site?
-# Summary of graph: 
+
 
 
 ```
-
+**Figure 5:** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
 
 ```{r, include = FALSE}
 
