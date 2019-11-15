@@ -309,7 +309,7 @@ MPA_12_18 <- lobster_tidy %>%
 MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
   geom_boxplot(aes(fill = protected)) +
   facet_wrap(~ year) +
-  theme_minimal() +
+  theme_bw() + #Vanessa, what do you think of this change to the graph? I think it makes it easier to tell the differences in means
   scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
   labs(x = "Site",
        y = "Carapace Length (mm)",
