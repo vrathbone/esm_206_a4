@@ -201,7 +201,7 @@ ggplot(data = lobster_size_b, aes(x = site,
 
 
 ```
-**Figure 4.** *Lobster Size Distribution Shifts*
+**Figure 4.** *Lobster carapace size distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are more sample sizes for 2018 in all 5 sites than in 2012.*
 NEEDS DESCRIPTION 
 
 
@@ -277,8 +277,8 @@ lobster_size_b <- lobster_tidy
 # Graph exploration 
 # Create a box plot option 1
 
-ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
-  geom_jitter(aes(color = site_name),
+ggplot(data = lobster_size_b, aes(x = site, y = size_mm))+
+  geom_jitter(aes(color = site),
               show.legend = FALSE) +
   #scale_x_discrete(limits = "AQUE", "CARP","MOHK","IVEE", "NAPL")+
   #scale_fill_discrete(name = "Protected Status")
