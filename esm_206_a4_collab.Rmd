@@ -390,14 +390,20 @@ lobster_d <- effsize::cohen.d(lobster_2012_mean$mean_mm, lobster_2018_mean$mean_
 # Create table(s) using kableExtra
 # Refer to Lab 7 line 231
 
-lobster_table <- lobster_means %>%
- kable(col.names = c("year",
-                     "protected",
-                     "mean_mm")) %>%
- kable_styling(bootstrap_options = "striped",
+#lobster_table <- lobster_means %>%
+ #kable(col.names = c("year",
+                     #"protected",
+                     #"mean_mm")) %>%
+ #kable_styling(bootstrap_options = c("striped", "condensed"),
+               #full_width = F,
+               #position = "left") %>%
+ #add_header_above(c("Lobster Mean Size at MPA and Non-MPA sites (2012 + 2018)" = 8))
+
+lobster_table <- lobster_means %>% 
+  kable() %>% 
+  kable_styling(bootstrap_options = c("striped", "condensed"),
                full_width = F,
-               position = "left") %>%
- add_header_above(c("Lobster Mean Size at MPA and Non-MPA sites (2012 + 2018)" = 3))
+               position = "left")
 
 ```
 
