@@ -44,7 +44,7 @@ Data on abundance, size and fishing pressure of California spiny lobster (Panuli
 
 ##### DATA AND METHODS (VANESSA)
 
-The dataset includes abundance (count) and carapace size (mm) data of spiney lobstar in 5 designated sites: 2 MPAs (Naples and Isla Vista) and 3 non-MPAs (Arroyo Quemado, Mohawk and Carpinteria) from 2012 through 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data included visually explorations and the following statistical test: T-test, mean, SD, sample size, p-value, confidence intervals, QQ plot. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. 
+The dataset includes abundance (count) and carapace size (mm) data of spiney lobstar in 5 designated sites: 2 MPAs (Naples and Isla Vista) and 3 non-MPAs (Arroyo Quemado, Mohawk and Carpinteria) from 2012 through 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data included visually explorations and the following statistical test: two-sided T-tests, mean, SD, sample size, p-value, confidence intervals, QQ plot. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. 
 
 
 ###### RESULTS A: Abundance of lobsters per site
@@ -62,10 +62,9 @@ lobster_ysite_a <- lobster_tidy %>%
                               ifelse(site == "NAPL", "Naples",
                                      ifelse(site == "AQUE", "Arroyo Quemado",
                                             ifelse(site == "CARP", "Carpenteria",
-                                            "Mohawk")))))
+                                            "Mohawk"))))) %>% 
+  rename("total_count" = "n")
 
-
-# RESULTS A: 
 # Visually explore the data, explore by site
 
 # Jitterplot 
@@ -94,11 +93,12 @@ ggplot(lobster_tidy, aes(sample = size_mm)) +
 # Create graph for lobster count per site per year
 
 ggplot(data = lobster_ysite_a, aes(x = year,
-                                   y = n)) +
-  geom_line(aes(color = site))+
+                                   y = total_count)) +
+  geom_line(aes(color = site)) +
   labs(x = "Year",
        y = "Lobster Count",
-       title = "Lobster Count in Santa Barbara LTER")
+       title = "Lobster Count in Santa Barbara LTER") +
+    theme_minimal()
   
             
             
@@ -306,7 +306,7 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 ```{r, include = FALSE}
 
 # RESULTS C
-# Use a t-test to find confidence intervals between MPA and non-MPA
+# Use a two-sided t-test (because data is unpaired) to look at any differences in mean lobster sizes between MPA and non-MPA, and in 2012 and 2018
 
 t_test_MPA <- lobster_size_b %>% 
   filter(MPA == "MPA") %>% 
@@ -320,7 +320,20 @@ t_test_non_MPA <- lobster_size_b %>%
 
 t.test(t_test_non_MPA)
 
-# Use a t-test to find confidence intervals between MPA and nonMPA in 2012
+# **Example statement of test outcome:** # change *p* in comment so it's reproduceable 
+# This will be in the Rmd file, NOT in a code chunk, but should still run
+
+#"Mean lead concentration (ppb) measured in immediately collected water samples (`r round(mean_immediate, 2)` $\pm$ `r round(sd_immediate, 2)`, n = `r n_immediate`) differed significantly from lead in water collected after 2 minutes of flushing (`r round(mean_flushed, 2)` $\pm$ `r round(sd_flushed, 2)`, n = `r n_flushed`) by a paired two-sample t-test (t(`r round(my_flint_test$parameter, 2)`) = `r round(my_flint_test$statistic, 2)`, *p* < 0.001)."
+
+# COHEN'S D
+# Run Cohen's *d* effect size to report a more meaningful metric of differences between group means
+#NEED TO DOUBLE CHECK (from lab 7)
+
+lobster_d <- effsize::cohen.d(lobster_2012_mean$mean_mm, lobster_2018_mean$mean_mm, na.rm = TRUE)
+
+
+
+
 
 ```
 
@@ -328,8 +341,7 @@ t.test(t_test_non_MPA)
 
 # RESULTS C
 # Create table(s) using kableExtra
-
-# Create data set to combine lobster means per MPA/non-MPA sites for 2012 and 2018
+# Refer to Lab 7 line 231
 
 lobster_table <- lobster_means %>%
  kable(col.names = c("year",
@@ -349,5 +361,5 @@ NEED TO WRITE
 
 ##### REFERENCES
 
-Reed D. 2019. SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012. Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Dataset accessed 10/30/2019.
+Reed D. 2019. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.* Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Dataset accessed 10/30/2019.
 
