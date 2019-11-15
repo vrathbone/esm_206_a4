@@ -30,10 +30,7 @@ na = "-99999") %>%
 ```
 
 ##### INTRO 
-
-Abstract:	
-Data on abundance, size and fishing pressure of California spiny lobster (Panulirus interruptus) are collected along the mainland coast of the Santa Barbara Channel. Spiny lobsters are an important predator in giant kelp forests off southern California. Two SBC LTER study reefs are located in or near the California Fish and Game Network of Marine Protected Areas (MPA), Naples and Isla Vista, both established as MPAs on 2012-01-01. MPAs provide a unique opportunity to investigate the effects of fishing on kelp forest community dynamics. Sampling began in 2012 and is ongoing.
-
+Spiney Lobster (Panulirus interruptus) are a species of special interest in California because they are a key predator in giant kelp forests. Kelp forests provide an abundance of food and coastline protection to shoreline communities. In 2012, 2 Marine protected areas (MPAs) were established in Santa Barbara County at Naples and Isla Vista. The Santa Barbara Coastal Long Term Ecological Research Team began collecting samples at five different kelp forest research sites. Two of these sites are within marine protected areas (Naples and Isla Vista) and three are outside of the marine protected area zones (Arroyo Quemodo, Mohawk, and Carpinteria). In this report, we explore data from the SBC LTR team to analyse lobster population trends, abundance and size in the MPA sites and non-MPA sites in 2012 and 2018.
 
 ![](lob_pic.jpg)
 **Figure 1.** *California spiny lobster (Panulirus interruptus). Credit: [Golden State Images](http://www.goldenstateimages.com/GSI_big.php?img=LOB-005).*
@@ -112,7 +109,7 @@ NEEDS DESCRIPTION
 ```{r, include = FALSE}
 
 # RESULTS B
-# Q: Is there a significance difference in lobster size distribution shifts in 2012 and 2018.
+# Q: Is there a significanct difference in lobster size distribution shifts in 2012 and 2018.
 # Data sets for lobster size distribution shifts in 2012 and 2018, together and separately
 
 lobster_12_18 <- lobster_tidy %>%
@@ -201,6 +198,9 @@ ggplot(data = lobster_size_b, aes(x = site,
 
 
 ```
+**Figure 4.** *Lobster Size Distribution Shifts*
+NEEDS DESCRIPTION 
+
 
 ###### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
 ```{r, include = FALSE}
@@ -276,7 +276,7 @@ lobster_size_b <- lobster_tidy
 
 ggplot(data = lobster_size_b, aes(x = site_name, y = size_mm))+
   geom_jitter(aes(color = site_name),
-              show.legend = FALSE)+
+              show.legend = FALSE) +
   #scale_x_discrete(limits = "AQUE", "CARP","MOHK","IVEE", "NAPL")+
   #scale_fill_discrete(name = "Protected Status")
   geom_boxplot(aes(fill = year), alpha = 0.5, outlier.color = NA, fill = "light blue")+
@@ -332,7 +332,7 @@ MPA_2012 <- lobster_size_b %>%
 nonMPA_2012 <- lobster_size_b %>% 
   filter(protected == "Non-MPA" | year == "2012")
 
-t.test(t_test_MPA$size_mm)
+t.test(t_test_MPA)
 
 t_test_non_MPA <- lobster_size_b %>% 
   filter(MPA == "non-MPA") %>% 
