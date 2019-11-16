@@ -104,10 +104,9 @@ ggplot(data = lobster_ysite_a, aes(x = year,
 
 ```
 
-**Figure 3.** *Abundance of spiny lobsters at 5 different SBC LTER sites between the years 2012 and 2018. Growth rates for lobster abundance increased significantly for Isla Vista, while Arroyo Quemado remained stagnat. Data: Reed D. 2019.*
-#need to remame site_name 
+**Figure 3.** *Abundance of spiny lobsters at 5 different SBC LTER sites between the years 2012 and 2018. Counts for lobster abundance increased for Isla Vista and Naples (both MPA sites), while Arroyo Quemado, Carpinteria, and Mohawk (non-MPA sites) have varying declines of count. Data: Reed D. 2019.*
 
-###### RESULTS B: Lobster size distribution shifts in 2012 & 2018
+##### RESULTS B: Lobster size distribution shifts in 2012 & 2018
 
 ```{r, include = FALSE}
 
@@ -180,13 +179,6 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 # RESULTS B
 # Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018.
 
-# Data viz exploration
-ggplot(data = lobster_size_b, aes(x = site,
-                                y = size_mm)) +
-          geom_jitter(aes(color = year),
-                      alpha = 0.75,
-              show.legend = FALSE)
-
 # Options 2 -
 
 ggplot(data = lobster_size_b, aes(x = site,
@@ -196,15 +188,26 @@ ggplot(data = lobster_size_b, aes(x = site,
               show.legend = FALSE) +
   labs(x = "Year",
       y = "Carapace Size (mm)",
-      title = "Lobster size distribution shifts in Santa Barbara") +
+      title = "Size Distribution of Lobsters at Santa Barbara Channel LTER Sites (2012 + 2018") +
   theme_classic() +
     facet_wrap(~year)
 
 ```
-**Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more sample sizes collected for each site in 2018 than in 2012, specifically at Carpenteria, Isla Vista and Naples.*
+**Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more observations collected for each site in 2018 than 2012, specifically at Carpinteria, Isla Vista and Naples.*
+
+```{r, echo = FALSE}
+
+# More data viz exploration for results B:
+
+ggplot(data = lobster_size_b, aes(x = site,
+                                y = size_mm)) +
+          geom_jitter(aes(color = year),
+                      alpha = 0.75,
+              show.legend = FALSE)
+```
 
 
-###### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
+##### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
 
 NEED TO ADD TABLE DESCRIPTION HERE (ABOVE the kable table)
 ```{r, include = FALSE}
@@ -259,28 +262,7 @@ lobster_table
 
 ```{r}
 
-# RESULTS C
-# Graph exploration 
-# Create a box plot option 1
 
-ggplot(data = lobster_size_b, aes(x = site, y = size_mm))+
-  geom_jitter(aes(color = site),
-              show.legend = FALSE) +
-  #scale_x_discrete(limits = "AQUE", "CARP","MOHK","IVEE", "NAPL")+
-  #scale_fill_discrete(name = "Protected Status")
-  geom_boxplot(aes(fill = year), alpha = 0.5, outlier.color = NA, fill = "light blue")+
-  labs(x = "Year",
-      y = "Size (mm)",
-      title = "Lobster size distribution shifts in Santa Barbara LTER")+
-  labs(x = "Year", y = "Lobster Size (mm)")+
-  scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue")) +
-  theme_classic()+
-    scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue"))+
-    facet_wrap(~ year)
-
-# need to fix graph so that the colors correspond with MPA and non-MPA. Also need to fix site names to be vertical
-
-# OPTION 2: 
 #Create New data frame for MPA only data, and data only from 2012 and 2018
 
 MPA_12_18 <- lobster_tidy %>% 
@@ -313,6 +295,34 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 
 ```
 **Figure 5:** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
+
+```{r, echo = FALSE}
+
+# RESULTS C
+# Graph exploration 
+# Create a box plot option 1
+
+# need to fix graph so that the colors correspond with MPA and non-MPA. Also need to fix site names to be vertical
+
+# OPTION 2: 
+
+ggplot(data = lobster_size_b, aes(x = site, y = size_mm))+
+  geom_jitter(aes(color = site),
+              show.legend = FALSE) +
+  #scale_x_discrete(limits = "AQUE", "CARP","MOHK","IVEE", "NAPL")+
+  #scale_fill_discrete(name = "Protected Status")
+  geom_boxplot(aes(fill = year), alpha = 0.5, outlier.color = NA, fill = "light blue")+
+  labs(x = "Year",
+      y = "Size (mm)",
+      title = "Lobster size distribution shifts in Santa Barbara")+
+  labs(x = "Year", y = "Lobster Size (mm)")+
+  scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue")) +
+  theme_classic()+
+    scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("orange", "orange", "orange", "light blue", "light blue"))+
+    facet_wrap(~ year)
+
+```
+
 
 ```{r, include = FALSE}
 
