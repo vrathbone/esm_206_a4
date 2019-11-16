@@ -239,7 +239,7 @@ lobster_2018_mean <- lobster_size_b %>%
 
 # Create kable table for size obervations
 
-lobster_means %>% 
+lobster_table <- lobster_means %>% 
   kable(col.names = c("Year",
                       "MPA",
                       "Mean (mm)",
@@ -252,6 +252,8 @@ lobster_means %>%
   row_spec(c(1:4),
            bold = T, 
            color = "grey")
+
+lobster_table
 
 ```
 
@@ -366,6 +368,7 @@ size_nonMPA_t <- t.test(nonMPA_2012$size_mm, nonMPA_2018$size_mm, paired = FALSE
 #if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = HIGHER, therefore we fail to reject NULL.
 size_nonMPA_d <- effsize::cohen.d(nonMPA_2012$size_mm, nonMPA_2018$size_mm, na.rm = TRUE)
 # Effect size is 0.12, a small effect size, therefore to notice a difference would have to be studied.
+
 
 
 # **Example statement of test outcome:** # change *p* in comment so it's reproduceable 
