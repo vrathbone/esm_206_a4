@@ -1,7 +1,7 @@
 ---
-title: "Assignment 4 - Spiny Lobsters"
+title: "Assignment 4 - California Spiny Lobster Abundance and Carapace Size"
 author: "Vanessa Rathbone and Nicole Schmidt"
-date: "11/12/2019"
+date: "11/18/2019"
 output: html_document
 ---
 
@@ -30,8 +30,8 @@ na = "-99999") %>%
 
 ```
 
-##### INTRO 
-Spiney Lobster (Panulirus interruptus) are a species of special interest in California because they are a key predator in giant kelp forests. Kelp forests provide an abundance of food and coastline protection to shoreline communities. In 2012, 2 Marine protected areas (MPAs) were established in Santa Barbara County at Naples and Isla Vista. The Santa Barbara Coastal Long Term Ecological Research Team began collecting samples at five different kelp forest research sites. Two of these sites are within marine protected areas (Naples and Isla Vista) and three are outside of the marine protected area zones (Arroyo Quemodo, Mohawk, and Carpinteria). In this report, we explore data from the SBC LTR team to analyze lobster population trends, abundance and size in the MPA sites and non-MPA sites in 2012 and 2018.
+##### INTRODUCTION
+Spiney Lobster (Panulirus interruptus) are a species of special interest in California because they are a key predator in giant kelp forests. Kelp forests provide an abundance of food and coastline protection to shoreline communities. In 2012, two marine protected areas (MPAs) were established in Santa Barbara County at Naples and Isla Vista. The Santa Barbara Coastal Long Term Ecological Research Team (SBC LTER) began collecting samples at five different kelp forest research sites. Two of these sites are within MPAs (Naples and Isla Vista) and three are outside of the MPA zones (Arroyo Quemodo, Mohawk, and Carpinteria). In this report, we explore data from the SBC LTR team to analyze changes in lobster population trends, abundance, and size at MPA sites versus non-MPA sites in 2012 and 2018.
 
 ![](lob_pic.jpg)
 **Figure 1.** *California spiny lobster (Panulirus interruptus). Credit: [Golden State Images](http://www.goldenstateimages.com/GSI_big.php?img=LOB-005).*
@@ -40,10 +40,9 @@ Spiney Lobster (Panulirus interruptus) are a species of special interest in Cali
 
 **Figure 2.** *Spacial Coverage of the five data sites. Credit:  [Santa Barbara Coastal LTER, Danial C. Reed](https://portal.edirepository.org/nis/mapbrowse?scope=knb-lter-sbc&identifier=77&revision=newest)*
 
-##### DATA AND METHODS (VANESSA)
+##### DATA AND METHODS
 
-The dataset includes abundance (count) and carapace size (mm) data of spiney lobstar in 5 designated sites: 2 MPAs (Naples and Isla Vista) and 3 non-MPAs (Arroyo Quemado, Mohawk and Carpinteria) from 2012 through 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data included visualually exploraing the data and the following statistical tests: two-sided T-tests, mean, SD, sample size, p-value, confidence intervals, QQ plot. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. 
-
+The dataset includes abundance (count) and carapace size (mm) data of spiney lobster in the 5 designated sites in Santa Barbara County between 2012 and 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data include visually exploring the data and conducting the following statistical tests: two-sided T-tests, mean, standard deviationD, sample size, confidence intervals, p-value, and effect size. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. 
 
 ###### RESULTS A: Abundance of lobsters per site
 ```{r, include = FALSE}
