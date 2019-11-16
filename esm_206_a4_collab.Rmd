@@ -195,7 +195,7 @@ ggplot(data = lobster_size_b, aes(x = site,
 ```
 **Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more observations collected for each site in 2018 than 2012, specifically at Carpinteria, Isla Vista and Naples.*
 
-```{r, echo = FALSE}
+```{r, echo=FALSE}
 
 # More data viz exploration for results B:
 
