@@ -19,6 +19,7 @@ library(janitor)
 library(kableExtra)
 library(plotly)
 library(effsize)
+library(dplyr)
 
 # Read in data and tidy it using clean_names() and uncount()
 
@@ -30,7 +31,7 @@ na = "-99999") %>%
 ```
 
 ##### INTRO 
-Spiney Lobster (Panulirus interruptus) are a species of special interest in California because they are a key predator in giant kelp forests. Kelp forests provide an abundance of food and coastline protection to shoreline communities. In 2012, 2 Marine protected areas (MPAs) were established in Santa Barbara County at Naples and Isla Vista. The Santa Barbara Coastal Long Term Ecological Research Team began collecting samples at five different kelp forest research sites. Two of these sites are within marine protected areas (Naples and Isla Vista) and three are outside of the marine protected area zones (Arroyo Quemodo, Mohawk, and Carpinteria). In this report, we explore data from the SBC LTR team to analyse lobster population trends, abundance and size in the MPA sites and non-MPA sites in 2012 and 2018.
+Spiney Lobster (Panulirus interruptus) are a species of special interest in California because they are a key predator in giant kelp forests. Kelp forests provide an abundance of food and coastline protection to shoreline communities. In 2012, 2 Marine protected areas (MPAs) were established in Santa Barbara County at Naples and Isla Vista. The Santa Barbara Coastal Long Term Ecological Research Team began collecting samples at five different kelp forest research sites. Two of these sites are within marine protected areas (Naples and Isla Vista) and three are outside of the marine protected area zones (Arroyo Quemodo, Mohawk, and Carpinteria). In this report, we explore data from the SBC LTR team to analyze lobster population trends, abundance and size in the MPA sites and non-MPA sites in 2012 and 2018.
 
 ![](lob_pic.jpg)
 **Figure 1.** *California spiny lobster (Panulirus interruptus). Credit: [Golden State Images](http://www.goldenstateimages.com/GSI_big.php?img=LOB-005).*
@@ -180,6 +181,15 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 # RESULTS B
 # Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018.
 
+# Data viz exploration
+ggplot(data = lobster_size_b, aes(x = site,
+                                y = size_mm)) +
+          geom_jitter(aes(color = year),
+                      alpha = 0.75,
+              show.legend = FALSE)
+
+# Options 2 -
+
 ggplot(data = lobster_size_b, aes(x = site,
                                 y = size_mm)) +
           geom_jitter(aes(color = site),
@@ -191,85 +201,60 @@ ggplot(data = lobster_size_b, aes(x = site,
   theme_classic() +
     facet_wrap(~year)
 
-# Data viz exploration
-ggplot(data = lobster_size_b, aes(x = site,
-                                y = size_mm)) +
-          geom_jitter(aes(color = year),
-                      alpha = 0.75,
-              show.legend = FALSE)
-
-
-
 ```
-**Figure 4.** *Lobster carapace size distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more sample sizes colelcted for each site in 2018 than in 2012.*
-NEEDS DESCRIPTION 
+**Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more sample sizes collected for each site in 2018 than in 2012, specifically at Carpenteria, Isla Vista and Naples.*
 
 
 ###### RESULTS C: Compare mean lobster sizes at MPA vs. non-MPA sites in 2012 and 2018
+
+NEED TO ADD TABLE DESCRIPTION HERE (ABOVE the kable table)
 ```{r, include = FALSE}
 
 # RESULTS C
-# Wrangle data for means 
+# Wrangle data for means, create kable table of findings
 # Create new data set for lobster size means for MPA vs non-MPA 2012 and 2018
 
 lobster_means <- lobster_size_b %>% 
   select(year, size_mm, site, MPA, site_name, protected) %>% 
   group_by(year, protected) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE),
-            sd_size = sd(size_mm, na.rm = TRUE),
-            sample_n = n())
+  summarise(size_mm = mean(size_mm, na.rm = TRUE),
+            sd = sd(size_mm, na.rm = TRUE),
+            sample_size = n())
 
 # Create two data frames, one for 2012 and one for 2018, Lobster size means to compare size at mpa vs non-MPA sites for stats exploration 
 
 lobster_2012_mean <- lobster_size_b %>% 
   filter(year == 2012) %>% 
   group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE),
-            sd_size = sd(size_mm, na.rm = TRUE),
-            sample_n = n())
+  summarise(size_mm = mean(size_mm, na.rm = TRUE),
+            sd = sd(size_mm, na.rm = TRUE),
+            sample_size = n())
   
 lobster_2018_mean <- lobster_size_b %>% 
   filter(year == 2018) %>% 
   group_by(MPA) %>% 
-  summarise(mean_mm = mean(size_mm, na.rm = TRUE), 
-            sd_size = sd(size_mm, na.rm = TRUE),
-            sample_n = n())
+  summarise(size_mm = mean(size_mm, na.rm = TRUE), 
+            sd = sd(size_mm, na.rm = TRUE),
+            sample_size = n())
+
+# Create kable table for size obervations
+
+lobster_means %>% 
+  kable(col.names = c("Year",
+                      "MPA",
+                      "Mean (mm)",
+                      "Standard Deviation",
+                      "Sample Size")) %>% 
+  kable_styling(bootstrap_options = "striped",
+                full_width = F,
+                position = "center") %>% 
+  add_header_above(c("Spiney Lobster Size (mm) Data" = 5)) %>% 
+  row_spec(c(1:4),
+           bold = T, 
+           color = "grey")
 
 ```
 
-```{r}
-
-
-
-```
-
-
-
-```{r, include = FALSE}
-
-# RESULTS C 
-# Wrangle data to show mean size of lobsters for MPA and non-MPA sites
-
-#lobster_size_b <- lobster_tidy
-  #filter(year %in% c(2012, 2018)) %>% 
- # group_by(site, year) %>% 
-  #select(year, size_mm, site) %>% 
-  #mutate("MPA" = ifelse(site == "IVEE", "MPA",
-                        #ifelse(site == "NAPL", "MPA",
-                               #"non-MPA"))) %>%
-  #mutate("site_name" = ifelse(site == "IVEE", "Isla Vista",
-                              #ifelse(site == "NAPL", "Naples",
-                                     #ifelse(site == "AQUE", "Arroyo Quemado",
-                                            #ifelse(site == "CARP", "Carpenteria",
-                                            #"Mohawk"))))) %>% 
-  # mutate(protected = case_when(
-    #site == "IVEE" ~ "MPA",
-   # site == "NAPL" ~ "MPA",
-    #site == "AQUE" ~ "Non-MPA",
-    #site == "CARP" ~ "Non-MPA",
-    #site == "MOHK" ~ "Non-MPA"))
-
-```
 
 ```{r}
 
@@ -310,6 +295,7 @@ MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
   geom_boxplot(aes(fill = protected)) +
   facet_wrap(~ year) +
   theme_bw() + #Vanessa, what do you think of this change to the graph? I think it makes it easier to tell the differences in means
+  # I agree, should we apply same treatment to the names as in b graph (full names and vertical)?
   scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
   labs(x = "Site",
        y = "Carapace Length (mm)",
@@ -320,6 +306,7 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 
 # Need to decide which one we think does a better job at responsibly and clearly describing the data
 #Nicole thinks MPA Graph 12_18 is better. We might want to write the entire name out for each site?
+#Vanessa - Agree and have site names vertical on the x-axes too? 
 
 
 
@@ -331,40 +318,54 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 #VANESSA TO FIX FRIDAY...too late to be CODINGGGG
 # RESULTS C
 # Use a two-sided t-test (because data is unpaired) to look at any differences in mean lobster sizes between MPA and non-MPA, and in 2012 and 2018
+# Create datasets to include each variable
 
-MPA_2012 <- lobster_size_b %>% 
-  filter(protected == "MPA" | year == "2012")
+lobster_mean_size <- lobster_tidy %>% 
+  mutate("MPA" = ifelse(site == "IVEE", "MPA",
+                        ifelse(site == "NAPL", "MPA",
+                               "non-MPA"))) %>%
+  select(year, size_mm, site, MPA) %>% 
+  filter(year %in% c(2012, 2018)) %>% 
+  group_by(year, MPA) 
 
-nonMPA_2012 <- lobster_size_b %>% 
-  filter(protected == "Non-MPA" | year == "2012")
 
-t.test(t_test_MPA)
+MPA_2012 <- lobster_mean_size %>% 
+  filter(MPA == "MPA", year == "2012")
 
-t_test_non_MPA <- lobster_size_b %>% 
-  filter(MPA == "non-MPA") %>% 
-  pull(size_mm)
+nonMPA_2012 <- lobster_mean_size %>% 
+  filter(MPA == "non-MPA", year == "2012")
 
-t.test(t_test_non_MPA)
+MPA_2018 <- lobster_mean_size %>% 
+  filter(MPA == "MPA", year == "2018")
 
-## Testing differences in means between carapace length in protected and non-protected sites
- 
-##H0: There is no difference in carapace lengths between protected and non-protected sites
-##HA: There is a difference in carapace lenths between protected and nonprotected sites
+nonMPA_2018 <- lobster_mean_size %>% 
+  filter(MPA == "non-MPA", year == "2018")
 
-##2012
+## Testing differences in means between carapace length in protected and non-protected sites using two-sided t-test (because data is unpaired) and Cohen's *d* effect size to report another metric of differences between group means
 
-#Nicole changed a few of the names below so it would run. I dont think I changed what you were going for Vanessa, but let me know if you had something different in mind. Sorry if I changed it to soemthing different
-mpa12_protected <- MPA_2012 %>%
-  filter(protected == "MPA") %>%
-  filter(year == "2012")
-      
-mpa12_unprotected <- MPA_2012 %>%
-  filter(protected == "Non-MPA") %>%
-  filter(year == "2012")
 
-#mpa12_t <- t.test(mpa12_protected$SIZE, mpa12_unprotected$SIZE, var.equal = TRUE)
+##H0: There is a difference in mean carapace lenths (mm) between MPA (protected) and non-MPA (non-protected) sites 
+##HA: There is NO difference in mean carapace lenths (mm) between MPA (protected) and non-MPA (non-protected) sites
 
-#mpa12_t
+size_2012_t <- t.test(MPA_2012$size_mm, nonMPA_2012$size_mm, paired = FALSE)
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = lower, therefore we reject NULL
+size_2012_d <- effsize::cohen.d(MPA_2012$size_mm, nonMPA_2012$size_mm, na.rm = TRUE)
+# Effect size is 0.61, a medium effect size, therefore the difference can be noticed with effort.
+
+size_2018_t <- t.test(MPA_2018$size_mm, nonMPA_2018$size_mm, paired = FALSE)
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2018 p-value = lower, therefore we reject NULL
+size_2018_d <- effsize::cohen.d(MPA_2018$size_mm, nonMPA_2018$size_mm, na.rm = TRUE)
+# Effect size is 0.35, a small effect size, therefore to notice a difference would have to be studied.
+
+size_mpa_t <- t.test(MPA_2012$size_mm, MPA_2018$size_mm, paired = FALSE)
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = lower, therefore we reject NULL
+size_mpa_d <- effsize::cohen.d(MPA_2012$size_mm, MPA_2018$size_mm, na.rm = TRUE)
+# Effect size is 0.87, a large effect size, therefore a difference is easily noticable. 
+
+size_nonMPA_t <- t.test(nonMPA_2012$size_mm, nonMPA_2018$size_mm, paired = FALSE)
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = HIGHER, therefore we fail to reject NULL.
+size_nonMPA_d <- effsize::cohen.d(nonMPA_2012$size_mm, nonMPA_2018$size_mm, na.rm = TRUE)
+# Effect size is 0.12, a small effect size, therefore to notice a difference would have to be studied.
 
 
 # **Example statement of test outcome:** # change *p* in comment so it's reproduceable 
@@ -372,22 +373,13 @@ mpa12_unprotected <- MPA_2012 %>%
 
 #"Mean lead concentration (ppb) measured in immediately collected water samples (`r round(mean_immediate, 2)` $\pm$ `r round(sd_immediate, 2)`, n = `r n_immediate`) differed significantly from lead in water collected after 2 minutes of flushing (`r round(mean_flushed, 2)` $\pm$ `r round(sd_flushed, 2)`, n = `r n_flushed`) by a paired two-sample t-test (t(`r round(my_flint_test$parameter, 2)`) = `r round(my_flint_test$statistic, 2)`, *p* < 0.001)."
 
-# COHEN'S D
-# Run Cohen's *d* effect size to report a more meaningful metric of differences between group means
-#NEED TO DOUBLE CHECK (from lab 7)
-
-lobster_d <- effsize::cohen.d(lobster_2012_mean$mean_mm, lobster_2018_mean$mean_mm, na.rm = TRUE)
-
-
-
-
 
 ```
 
 ```{r}
 
 # RESULTS C
-# Create table(s) using kableExtra
+# Create table(s) using kableExtra, see table above.  
 # Refer to Lab 7 line 231
 
 #lobster_table <- lobster_means %>%
