@@ -404,9 +404,10 @@ lobster_table <- lobster_means %>%
 
 
 ##### SUMMARY 
-- mpa versus non-MPA
+- Designated MPA sites improve the abundance of spiney lobster populations (Figure 4)
+- Designated MPA sites increase the carapace size of spiney lobster populations (Figure 5)
 - different sample sizes (n) making a difference in analysis?
--
+
 
 NEED TO WRITE
 
