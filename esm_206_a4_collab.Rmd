@@ -379,9 +379,9 @@ mean_nonMPA_2018 <- mean(nonMPA_2018$size_mm, na.rm = TRUE)
 
 
 
-'For MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters increased by 10.2 millimeters (from `r round(mean_MPA_2012, 1)` to `r round(mean_MPA_2018, 1)`). This size increase is statistically significant as seen in the two-sided, unpaired t-test, (t(`r round(size_MPA_t$parameter, 1)`)) = `r round(size_MPA_t$statistic, 1)`, *p* = `r round(size_MPA_t$p.value, 1)`)). The effect size seen in the Cohen's d test is large (`r round(size_MPA_d$estimate, 2)`)) indicating that from 2012 to 2018, the mean lobster carapice size increase at MPA sites is significant and substantive.'
+For MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters increased by 10.2 millimeters (from `r round(mean_MPA_2012, 1)` to `r round(mean_MPA_2018, 1)`). This size increase is statistically significant as seen in the two-sided, unpaired t-test, (t(`r round(size_MPA_t$parameter, 1)`)) = `r round(size_MPA_t$statistic, 1)`, *p* = `r round(size_MPA_t$p.value, 1)`)). The effect size seen in the Cohen's d test is large (`r round(size_MPA_d$estimate, 2)`)) indicating that from 2012 to 2018, the mean lobster carapice size increase at MPA sites is significant and substantive.
 
-'For non-MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters decreased by 1.3 millimeters (from `r round(mean_nonMPA_2012, 1)` to `r round(mean_nonMPA_2018, 1)`). This size increase is not statistically significant as seen in the two-sided t-test, t(`r round(size_nonMPA_ttest$parameter, 1)`) = `r round(size_nonMPA_ttest$statistic, 1)`, *p* = `r round(size_nonMPA_ttest$p.value)`). The effect size seen in the Cohen's d test is small (`r round(size_nonMPA_d$estimate, 2)`) indicating that from 2012 to 2018, the mean lobster size decrease at non-MPA sites is not significant or substantive.'
+For non-MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters decreased by 1.3 millimeters (from `r round(mean_nonMPA_2012, 1)` to `r round(mean_nonMPA_2018, 1)`). This size increase is not statistically significant as seen in the two-sided t-test, t(`r round(size_nonMPA_t$parameter, 1)`) = `r round(size_nonMPA_t$statistic, 1)`, *p* = `r round(size_nonMPA_t$p.value)`). The effect size seen in the Cohen's d test is small (`r round(size_nonMPA_d$estimate, 2)`) indicating that from 2012 to 2018, the mean lobster size decrease at non-MPA sites is not significant or substantive.
 
 
 ##### SUMMARY 
@@ -395,4 +395,3 @@ mean_nonMPA_2018 <- mean(nonMPA_2018$size_mm, na.rm = TRUE)
 Reed D. 2019. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.* Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Accessed 10/30/2019.
 
 Marine Science Institute, UCSB (MSI). 2019.*[Santa Barbara Coastal LTER.]* https://sbclter.msi.ucsb.edu/. Accessed 10/30/2019.
-
