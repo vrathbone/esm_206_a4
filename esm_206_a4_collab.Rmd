@@ -99,6 +99,7 @@ ggplot(data = lobster_ysite_a, aes(x = year,
                      breaks = seq(2012, 2018, by = 1)) +
   scale_y_continuous(expand = c(0,0))
   
+  
 # scale_color_manual(breaks = c("MPA", "non-MPA"), values = c("blue", "orange")
 
 ```
@@ -162,13 +163,9 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
                               ifelse(site == "NAPL", "Naples",
                                      ifelse(site == "AQUE", "Arroyo Quemado",
                                             ifelse(site == "CARP", "Carpenteria",
-                                            "Mohawk"))))) %>% 
-   mutate(protected = case_when(
-    site == "IVEE" ~ "MPA",
-    site == "NAPL" ~ "MPA",
-    site == "AQUE" ~ "Non-MPA",
-    site == "CARP" ~ "Non-MPA",
-    site == "MOHK" ~ "Non-MPA"))
+                                            "Mohawk")))))
+# Alt option for ifelse statements FYI
+# mutate(protected = case_when(site == "IVEE" ~ "MPA", site == "NAPL" ~ "MPA", site == "AQUE" ~ "Non-MPA", site == "CARP" ~ "Non-MPA", site == "MOHK" ~ "Non-MPA"))
 
 
 ```
@@ -183,7 +180,7 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 ggplot(data = lobster_size_b, aes(x = site,
                                 y = size_mm)) +
           geom_jitter(aes(color = site),
-                      alpha = 0.75,
+                      alpha = 0.5,
               show.legend = FALSE) +
   labs(x = "Year",
       y = "Carapace Size (mm)",
@@ -195,7 +192,7 @@ ggplot(data = lobster_size_b, aes(x = site,
 ```
 **Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more observations collected for each site in 2018 than 2012, specifically at Carpinteria, Isla Vista and Naples (CARP, IVEE, NAPL).*
 
-##### RESULTS C: Compare mean lobster sizes (mm) at MPA vs. non-MPA sites in 2012 and 2018
+##### RESULTS C: Compare mean lobster sizes (mm) at marine protected areas (MPAs) vs. non-marine protected areas (non-MPAs) in 2012 and 2018
 
 **Table 1.** *Lobster mean carapace sizes (mm) increased for MPA sites from 2012 to 2018, while mean carapace sizes (mm) decreased at non-MPA sites. Sample sizes increased from 231 in 2012 to 1805 in 2018.*
 
@@ -276,19 +273,18 @@ MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
   scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
   labs(x = "Site",
        y = "Carapace Length (mm)",
-       title = "Size Distribution of Lobsters at Santa Barbara Channel LTER Sites (2012 + 2018") +
+       title = "Size Distribution of Lobsters in 2012 and 2018",
+       subtitle = "Santa Barbara Channel LTER Sites") +
   scale_fill_discrete(name = "Protected Status")
 
 MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) 
 
 # Need to decide which one we think does a better job at responsibly and clearly describing the data
 #Nicole thinks MPA Graph 12_18 is better. We might want to write the entire name out for each site?
-#Vanessa - Agree and have site names vertical on the x-axes too? 
-
-
+#Vanessa - Agree and have site names vertical on the x-axes too?
 
 ```
-**Figure 5:** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
+**Figure 5:** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices (mm) increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
 
 ```{r, include = FALSE, echo = FALSE}
 
@@ -320,7 +316,6 @@ ggplot(data = lobster_size_b, aes(x = site, y = size_mm))+
 
 ```{r, include = FALSE}
 
-#VANESSA TO FIX FRIDAY...too late to be CODINGGGG
 # RESULTS C
 # Use a two-sided t-test (because data is unpaired) to look at any differences in mean lobster sizes between MPA and non-MPA, and in 2012 and 2018
 # Create datasets to include each variable
@@ -348,55 +343,56 @@ nonMPA_2018 <- lobster_mean_size %>%
 
 ## Testing differences in means between carapace length in protected and non-protected sites using two-sided t-test (because data is unpaired) and Cohen's *d* effect size to report another metric of differences between group means
 
-
-##H0: There is a difference in mean carapace lenths (mm) between MPA (protected) and non-MPA (non-protected) sites 
-##HA: There is NO difference in mean carapace lenths (mm) between MPA (protected) and non-MPA (non-protected) sites
+##H0: There is NO difference in mean carapace lenths (mm) between MPA (protected) and non-MPA (non-protected) sites 
+##HA: There is a difference in mean carapace lenths (mm) between MPA (protected) and non-MPA (non-protected) sites
 
 size_2012_t <- t.test(MPA_2012$size_mm, nonMPA_2012$size_mm, paired = FALSE)
-#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = lower, therefore we reject NULL
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = lower, therefore we reject NULL.
 size_2012_d <- effsize::cohen.d(MPA_2012$size_mm, nonMPA_2012$size_mm, na.rm = TRUE)
-# Effect size is 0.61, a medium effect size, therefore the difference can be noticed with effort.
+# Effect size is 0.61, a medium effect size, therefore the difference can be noticed with some effort.
 
 size_2018_t <- t.test(MPA_2018$size_mm, nonMPA_2018$size_mm, paired = FALSE)
-#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2018 p-value = lower, therefore we reject NULL
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2018 p-value = lower, therefore we reject NULL.
 size_2018_d <- effsize::cohen.d(MPA_2018$size_mm, nonMPA_2018$size_mm, na.rm = TRUE)
 # Effect size is 0.35, a small effect size, therefore to notice a difference would have to be studied.
 
-size_mpa_t <- t.test(MPA_2012$size_mm, MPA_2018$size_mm, paired = FALSE)
-#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = lower, therefore we reject NULL
-size_mpa_d <- effsize::cohen.d(MPA_2012$size_mm, MPA_2018$size_mm, na.rm = TRUE)
+size_MPA_t <- t.test(MPA_2012$size_mm, MPA_2018$size_mm, paired = FALSE)
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = lower, therefore we reject NULL.
+size_MPA_d <- effsize::cohen.d(MPA_2012$size_mm, MPA_2018$size_mm, na.rm = TRUE)
 # Effect size is 0.87, a large effect size, therefore a difference is easily noticable. 
 
 size_nonMPA_t <- t.test(nonMPA_2012$size_mm, nonMPA_2018$size_mm, paired = FALSE)
-#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = HIGHER, therefore we fail to reject NULL.
+#if p-value is less than alpha (0.5), reject the NULL hypothesis, agreement with the ALT hypothesis. Size 2012 p-value = HIGHER, therefore we fail to reject NULL. 
 size_nonMPA_d <- effsize::cohen.d(nonMPA_2012$size_mm, nonMPA_2018$size_mm, na.rm = TRUE)
 # Effect size is 0.12, a small effect size, therefore to notice a difference would have to be studied.
 
+# Create individual means for the inline text: 
 
-
-# **Example statement of test outcome:** # change *p* in comment so it's reproduceable 
-# This will be in the Rmd file, NOT in a code chunk, but should still run
+mean_MPA_2012 <- mean(MPA_2012$size_mm, na.rm = TRUE) 
+mean_MPA_2018 <- mean(MPA_2018$size_mm, na.rm = TRUE) 
+mean_nonMPA_2012 <- mean(nonMPA_2012$size_mm, na.rm = TRUE)
+mean_nonMPA_2018 <- mean(nonMPA_2018$size_mm, na.rm = TRUE)
 
 #"Mean lead concentration (ppb) measured in immediately collected water samples (`r round(mean_immediate, 2)` $\pm$ `r round(sd_immediate, 2)`, n = `r n_immediate`) differed significantly from lead in water collected after 2 minutes of flushing (`r round(mean_flushed, 2)` $\pm$ `r round(sd_flushed, 2)`, n = `r n_flushed`) by a paired two-sample t-test (t(`r round(my_flint_test$parameter, 2)`) = `r round(my_flint_test$statistic, 2)`, *p* < 0.001)."
 
-# The mean size of lobsters found within the MPA sites increased by 10.2 millimeters (mm) (from `r round(mean_mpa_2012, 1)`mm to `r round(mean_mpa_2018, 1)`mm) between 2012 and 2018. Between the two years, the size increase is statistically significant (two-sided t-test, t(`r round(size_mpa_ttest$parameter, 1)`) = `r round(size_mpa_ttest$statistic, 1)`, *p* = `r round(size_mpa_ttest$p.value, 1)`) and the effect size is large (Cohen's d = `r round(size_mpa_d$estimate, 2)`). This indicates that from 2012 to 2018, the mean lobster size increase at MPA sites of 10.2mm was significant and substantive.
-
-#Mean sizes of lobsters found within the three non-MPA sites decreased by 1.3mm (from `r round(mean_nonmpa_2012, 1)` mm to `r round(mean_nonmpa_2018, 1)`mm) between 2012 and 2018. Between the two years, the size increase is not statistically significant (two-sided t-test, t(`r round(size_nonmpa_ttest$parameter, 1)`) = `r round(size_nonmpa_ttest$statistic, 1)`, *p* = `r round(size_nonmpa_ttest$p.value)`) and the effect size is small (Cohen's d = `r round(size_nonmpa_d$estimate, 2)`) This indicates that from 2012 to 2018, the mean lobster size decrease at non-MPA sites of 1.3mm was not significant nor substantive.
-
-
-
 ```
 
+
+
+'For MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters increased by 10.2 millimeters (from `r round(mean_MPA_2012, 1)` to `r round(mean_MPA_2018, 1)`). This size increase is statistically significant as seen in the two-sided, unpaired t-test, (t(`r round(size_MPA_t$parameter, 1)`)) = `r round(size_MPA_t$statistic, 1)`, *p* = `r round(size_MPA_t$p.value, 1)`)). The effect size seen in the Cohen's d test is large (`r round(size_MPA_d$estimate, 2)`)) indicating that from 2012 to 2018, the mean lobster carapice size increase at MPA sites is significant and substantive.'
+
+'For non-MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters decreased by 1.3 millimeters (from `r round(mean_nonMPA_2012, 1)` to `r round(mean_nonMPA_2018, 1)`). This size increase is not statistically significant as seen in the two-sided t-test, t(`r round(size_nonMPA_ttest$parameter, 1)`) = `r round(size_nonMPA_ttest$statistic, 1)`, *p* = `r round(size_nonMPA_ttest$p.value)`). The effect size seen in the Cohen's d test is small (`r round(size_nonMPA_d$estimate, 2)`) indicating that from 2012 to 2018, the mean lobster size decrease at non-MPA sites is not significant or substantive.'
+
+
 ##### SUMMARY 
-- Designated MPA sites improve the abundance of spiney lobster populations (Figure 4)
-- Designated MPA sites increase the carapace size of spiney lobster populations (Figure 5)
-- different sample sizes (n) making a difference in analysis?
-
-
-NEED TO WRITE
+- Lobster abundance has significantly improved since the establishment of designated MPA sites (Figure 3). 
+- Mean lobster size distribution has significantly increased at MPA sites from 2012 to 2018 (Figure 5), while at non-MPA sites a decrease of mean size can be observed (Table 1).
+- We can infer from the tests used to analyze this data, that designated MPA sites increase the carapace size and abundance of spiny lobster populations more than non-MPA sites. Thus, indicating that marine protected areas allow for growth and increaed reproduction over non-protected areas. 
 
 
 ##### REFERENCES
 
-Reed D. 2019. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.* Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Dataset accessed 10/30/2019.
+Reed D. 2019. *SBC LTER: Reef: Abundance, size and fishing effort for California Spiny Lobster (Panulirus interruptus), ongoing since 2012.* Environmental Data Initiative. https://doi.org/10.6073/pasta/a593a675d644fdefb736750b291579a0. Accessed 10/30/2019.
+
+Marine Science Institute, UCSB (MSI). 2019.*[Santa Barbara Coastal LTER.]* https://sbclter.msi.ucsb.edu/. Accessed 10/30/2019.
 
