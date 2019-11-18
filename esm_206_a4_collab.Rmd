@@ -204,7 +204,7 @@ ggplot(data = lobster_size_b, aes(x = site,
 
 lobster_means <- lobster_size_b %>%
   filter(year %in% c(2012, 2018)) %>% 
-  group_by(year, protected) %>%
+  group_by(year, MPA) %>%
   summarize(mean = round(mean(size_mm),2),
             std_dev = round(sd(size_mm),2),
             samp_size = n())
