@@ -145,7 +145,7 @@ ggplot(lobster_18, aes(sample = size_mm)) +
 
 ```
 
-```{r, include = FALSE}
+```{r, include = FALSE }
 
 # RESULTS B
 # Wrangling data to create a data frame that keeps size measurements from 2012 and 2018, also for MPA vs. non-MPA
@@ -174,7 +174,7 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 
 ```
 
-```{r}
+```{r, include = FALSE}
 
 # RESULTS B
 # Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018.
@@ -296,7 +296,7 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 ```
 **Figure 5:** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
 
-```{r, echo = FALSE}
+```{r, include = FALSE, echo = FALSE}
 
 # RESULTS C
 # Graph exploration 
