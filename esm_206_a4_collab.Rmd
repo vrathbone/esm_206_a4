@@ -41,7 +41,7 @@ Spiny Lobster (Panulirus interruptus) are a species of special interest in Calif
 
 ##### DATA AND METHODS
 
-The dataset includes abundance (count) and carapace size (mm) data of spiny lobster in the 5 designated sites in Santa Barbara County between 2012 and 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data include visually exploring the data and conducting the following statistical tests: two-sided T-tests ($\alpha$ = 0.05 throughout), mean, standard deviation, sample size, confidence intervals, p-value, and effect size. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. Analyses and figures were prepared using R software version 3.6.1. 
+The dataset includes abundance (count) and carapace size (mm) data of spiny lobster in the 5 designated sites in Santa Barbara County between 2012 and 2018. The data is collected annually by divers from October to March before the start of the lobster season. During that time, data is collected every 2-4 weeks. Our methods for observing and analyzing the data include visually exploring the data and conducting the following statistical tests: two-sided T-tests ($\alpha$ = 0.05 throughout), mean, standard deviation, sample size, confidence intervals, p-value, and effect size. Specifically, we used these tests to infer distributions and differences across these key variables: size, count, years and sites. Analysis and figures were prepared using R software version 3.6.1. 
 
 ##### RESULTS A: Abundance of lobsters per site
 ```{r, include = FALSE}
