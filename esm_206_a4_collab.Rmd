@@ -34,6 +34,7 @@ na = "-99999") %>%
 Spiny Lobster (Panulirus interruptus) are a species of special interest in California because they are a key predator in giant kelp forests. Kelp forests provide an abundance of food and coastline protection to shoreline communities. In 2012, two marine protected areas (MPAs) were established in Santa Barbara County at Naples and Isla Vista. The Santa Barbara Coastal Long Term Ecological Research Team (SBC LTER) began collecting samples at five different kelp forest research sites. Two of these sites are within MPAs (Naples and Isla Vista) and three are outside of the MPA zones (Arroyo Quemodo, Mohawk, and Carpinteria). In this report, we explore data from the SBC LTR team to analyze changes in lobster population trends, abundance, and size at MPA sites versus non-MPA sites in 2012 and 2018.
 
 ![](lob_pic.jpg)
+
 **Figure 1.** *California spiny lobster (Panulirus interruptus). Credit: [Golden State Images](http://www.goldenstateimages.com/GSI_big.php?img=LOB-005).*
 
 ![](lob_sites.png)
@@ -201,6 +202,7 @@ MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines"))
 # Need to decide which one we think does a better job at responsibly and clearly describing the data
 
 ```
+
 **Figure 4.** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices (mm) increased for both MPA sites (IVEE and NAPL), while the non-MPA sites average carpace sizes remained similar between the years.*
 
 ```{r, echo = FALSE, include = FALSE}
