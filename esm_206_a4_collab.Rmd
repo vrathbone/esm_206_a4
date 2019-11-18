@@ -1,5 +1,5 @@
 ---
-title: "Assignment 4 - California Spiny Lobster Abundance and Carapace Size"
+title: "California Spiny Lobster Abundance and Carapace Size - Assignment 4"
 author: "Vanessa Rathbone and Nicole Schmidt"
 date: "11/18/2019"
 output: html_document
@@ -170,7 +170,40 @@ lobster_size_b <- read_csv("lobster_abundance_sbc_lter.csv", na = "-99999") %>%
 
 ```
 
-```{r, echo = FALSE}
+```{r}
+
+#RESULTS B
+#Create new data frame for MPA only data, and data only from 2012 and 2018
+
+MPA_12_18 <- lobster_tidy %>% 
+  filter(year == "2012" | year == "2018") %>% 
+  mutate(protected = case_when(
+    site == "IVEE" ~ "MPA",
+    site == "NAPL" ~ "MPA",
+    site == "AQUE" ~ "Non-MPA",
+    site == "CARP" ~ "Non-MPA",
+    site == "MOHK" ~ "Non-MPA"))
+
+MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
+  geom_boxplot(aes(fill = protected)) +
+  facet_wrap(~ year) +
+  theme_bw() + #Vanessa, what do you think of this change to the graph? I think it makes it easier to tell the differences in means
+  # I agree, should we apply same treatment to the names as in b graph (full names and vertical)?
+  scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
+  labs(x = "Site",
+       y = "Carapace Length (mm)",
+       title = "Size Distribution of Lobsters in 2012 and 2018",
+       subtitle = "Santa Barbara Channel LTER Sites") +
+  scale_fill_discrete(name = "Protected Status")
+
+MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) 
+
+# Need to decide which one we think does a better job at responsibly and clearly describing the data
+
+```
+**Figure 4.** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices (mm) increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
+
+```{r, echo = FALSE, include = FALSE}
 
 # RESULTS B
 # Visually explore lobster size distribution shifts by comparing lobster sizes in 2012 and 2018.
@@ -189,8 +222,9 @@ ggplot(data = lobster_size_b, aes(x = site,
   theme_classic() +
     facet_wrap(~year)
 
+#**Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more observations collected for each site in 2018 than 2012, specifically at Carpinteria, Isla Vista and Naples (CARP, IVEE, NAPL).*
+
 ```
-**Figure 4.** *Lobster carapace size (mm) distribution shifts between 2012 and 2018 increased significantly for both the MPA sites (IVEE and NAPL). There are significantly more observations collected for each site in 2018 than 2012, specifically at Carpinteria, Isla Vista and Naples (CARP, IVEE, NAPL).*
 
 ##### RESULTS C: Compare mean lobster sizes (mm) at marine protected areas (MPAs) vs. non-marine protected areas (non-MPAs) in 2012 and 2018
 
@@ -250,41 +284,6 @@ lobster_table <- lobster_means %>%
 lobster_table
 
 ```
-
-
-```{r}
-
-#Create new data frame for MPA only data, and data only from 2012 and 2018
-
-MPA_12_18 <- lobster_tidy %>% 
-  filter(year == "2012" | year == "2018") %>% 
-  mutate(protected = case_when(
-    site == "IVEE" ~ "MPA",
-    site == "NAPL" ~ "MPA",
-    site == "AQUE" ~ "Non-MPA",
-    site == "CARP" ~ "Non-MPA",
-    site == "MOHK" ~ "Non-MPA"))
-
-MPA_graph_12_18 <- ggplot(MPA_12_18, aes(x= site, y= size_mm)) +
-  geom_boxplot(aes(fill = protected)) +
-  facet_wrap(~ year) +
-  theme_bw() + #Vanessa, what do you think of this change to the graph? I think it makes it easier to tell the differences in means
-  # I agree, should we apply same treatment to the names as in b graph (full names and vertical)?
-  scale_x_discrete(limits = c("AQUE", "CARP", "MOHK", "IVEE", "NAPL")) +
-  labs(x = "Site",
-       y = "Carapace Length (mm)",
-       title = "Size Distribution of Lobsters in 2012 and 2018",
-       subtitle = "Santa Barbara Channel LTER Sites") +
-  scale_fill_discrete(name = "Protected Status")
-
-MPA_graph_12_18 + theme(panel.spacing = unit(3, "lines")) 
-
-# Need to decide which one we think does a better job at responsibly and clearly describing the data
-#Nicole thinks MPA Graph 12_18 is better. We might want to write the entire name out for each site?
-#Vanessa - Agree and have site names vertical on the x-axes too?
-
-```
-**Figure 5:** *Size distribution shifts of lobsters at all five sites at years 2012 and 2018 comparing changes in MPA versus non-MPA sites. The average size of lobster carapices (mm) increased for both MPA sites (IVEE and NAPL), while the non-MPA sites avaerage carpace sizes remained similar between the years.*
 
 ```{r, include = FALSE, echo = FALSE}
 
@@ -376,8 +375,6 @@ mean_nonMPA_2018 <- mean(nonMPA_2018$size_mm, na.rm = TRUE)
 #"Mean lead concentration (ppb) measured in immediately collected water samples (`r round(mean_immediate, 2)` $\pm$ `r round(sd_immediate, 2)`, n = `r n_immediate`) differed significantly from lead in water collected after 2 minutes of flushing (`r round(mean_flushed, 2)` $\pm$ `r round(sd_flushed, 2)`, n = `r n_flushed`) by a paired two-sample t-test (t(`r round(my_flint_test$parameter, 2)`) = `r round(my_flint_test$statistic, 2)`, *p* < 0.001)."
 
 ```
-
-
 
 For MPA sites, between 2012 and 2018, the mean carapice size (mm) of lobsters increased by 10.2 millimeters (from `r round(mean_MPA_2012, 1)` to `r round(mean_MPA_2018, 1)`). This size increase is statistically significant as seen in the two-sided, unpaired t-test, (t(`r round(size_MPA_t$parameter, 1)`)) = `r round(size_MPA_t$statistic, 1)`, *p* = `r round(size_MPA_t$p.value, 1)`)). The effect size seen in the Cohen's d test is large (`r round(size_MPA_d$estimate, 2)`)) indicating that from 2012 to 2018, the mean lobster carapice size increase at MPA sites is significant and substantive.
 
